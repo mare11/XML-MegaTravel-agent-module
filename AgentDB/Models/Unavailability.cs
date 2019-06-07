@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Serialization;
+
+namespace AgentApp.Models
+{
+    public class Unavailability
+    {
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date")]
+        public System.DateTime StartDate { get; set; }
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute(DataType = "date")]
+        public System.DateTime EndDate { get; set; }
+
+        /// <remarks/>
+        public long Id { get; set; }
+    }
+}
