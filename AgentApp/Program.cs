@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using TestServiceReference;
 
 namespace AgentApp
 {
@@ -14,7 +15,17 @@ namespace AgentApp
     {
         public static void Main(string[] args)
         {
+
+            AccommodationPortClient accommodationPortClient = new AccommodationPortClient();
+            getAccommodationRequest accommodationRequest = new getAccommodationRequest();
+            accommodationRequest.name = "DA LI RADI? BRANKO";
+
+            System.Diagnostics.Debug.WriteLine("BLA BLA BLA");
+
+            System.Diagnostics.Debug.WriteLine(accommodationPortClient.getAccommodationAsync(accommodationRequest).Result.getAccommodationResponse.accommodation);
+
             CreateWebHostBuilder(args).Build().Run();
+
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
