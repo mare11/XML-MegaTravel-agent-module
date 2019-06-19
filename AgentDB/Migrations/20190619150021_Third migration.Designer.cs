@@ -4,14 +4,16 @@ using AgentDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AgentDB.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    partial class AgentContextModelSnapshot : ModelSnapshot
+    [Migration("20190619150021_Third migration")]
+    partial class Thirdmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,8 +42,6 @@ namespace AgentDB.Migrations
                     b.Property<string>("Description");
 
                     b.Property<bool>("FreeCancellation");
-
-                    b.Property<long>("IdMainDB");
 
                     b.Property<long?>("LocationId");
 

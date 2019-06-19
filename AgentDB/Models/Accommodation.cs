@@ -1,4 +1,6 @@
-﻿using System;
+﻿using AgentDB;
+using AgentDB.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Xml.Serialization;
 
 namespace AgentApp.Models
 {
+    [Serializable]
     public class Accommodation
     {
 
@@ -40,8 +43,6 @@ namespace AgentApp.Models
         /// <remarks/>
         public int NumberOfPersons { get; set; }
 
-        /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace = "https://github.com/mare11/XML_MegaTravel/user")]
         public Agent Agent { get; set; }
 
         /// <remarks/>
@@ -59,10 +60,15 @@ namespace AgentApp.Models
         public Unavailability[] Unavailability { get; set; }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Reservation", Namespace = "https://github.com/mare11/XML_MegaTravel/reservation")]
-        public Reservation[] Reservation { get; set; }
+        //[System.Xml.Serialization.XmlElementAttribute("Reservation", Namespace = "https://github.com/mare11/XML_MegaTravel/reservation")]
+        //public Reservation[] Reservation { get; set; }
+
+        public List<ReservationLong> ReservationIds { get; set; }
 
         /// <remarks/>
         public long Id { get; set; }
+
+        public long IdMainDB { get; set; }
+
     }
 }

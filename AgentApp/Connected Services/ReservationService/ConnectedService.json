@@ -1,12 +1,9 @@
 ﻿{
   "ProviderId": "Microsoft.VisualStudio.ConnectedService.Wcf",
   "Version": "15.0.20628.921",
-  "GettingStartedDocument": {
-    "Uri": "https://go.microsoft.com/fwlink/?linkid=858517"
-  },
   "ExtendedData": {
-    "Uri": "http://localhost:8081/ws/accommodations.wsdl",
-    "Namespace": "TestServiceReference",
+    "Uri": "D:\\Faks\\XML i Web\\reservations.wsdl",
+    "Namespace": "ReservationService",
     "SelectedAccessLevelForGeneratedClass": "Public",
     "GenerateMessageContract": false,
     "ReuseTypesinReferencedAssemblies": true,
@@ -21,7 +18,7 @@
     },
     "CheckedReferencedAssemblies": [],
     "InstanceId": null,
-    "Name": "TestServiceReference",
+    "Name": "ReservationService",
     "Metadata": {}
   }
 }

@@ -4,14 +4,16 @@ using AgentDB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AgentDB.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    partial class AgentContextModelSnapshot : ModelSnapshot
+    [Migration("20190618031548_Second migration")]
+    partial class Secondmigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,7 +29,7 @@ namespace AgentDB.Migrations
 
                     b.Property<long?>("AccommodationTypeId");
 
-                    b.Property<long?>("AgentId");
+                    b.Property<long>("AgentID");
 
                     b.Property<int>("CancellationDays");
 
@@ -41,8 +43,6 @@ namespace AgentDB.Migrations
 
                     b.Property<bool>("FreeCancellation");
 
-                    b.Property<long>("IdMainDB");
-
                     b.Property<long?>("LocationId");
 
                     b.Property<int>("NumberOfPersons");
@@ -51,7 +51,7 @@ namespace AgentDB.Migrations
 
                     b.HasIndex("AccommodationTypeId");
 
-                    b.HasIndex("AgentId");
+                    b.HasIndex("AgentID");
 
                     b.HasIndex("LocationId");
 
@@ -293,7 +293,8 @@ namespace AgentDB.Migrations
 
                     b.HasOne("AgentApp.Models.Agent", "Agent")
                         .WithMany("Accommodation")
-                        .HasForeignKey("AgentId");
+                        .HasForeignKey("AgentID")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("AgentApp.Models.Location", "Location")
                         .WithMany()

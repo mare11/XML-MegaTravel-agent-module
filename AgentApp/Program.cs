@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
+using AccommodationService;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using TestServiceReference;
+using ReservationService;
+using AgentApp.Controllers;
 
 namespace AgentApp
 {
@@ -16,17 +19,10 @@ namespace AgentApp
         public static void Main(string[] args)
         {
 
-            AccommodationPortClient accommodationPortClient = new AccommodationPortClient();
-            getAccommodationRequest accommodationRequest = new getAccommodationRequest();
-            accommodationRequest.name = "DA LI RADI? BRANKO";
-
-            System.Diagnostics.Debug.WriteLine("BLA BLA BLA");
-
-            System.Diagnostics.Debug.WriteLine(accommodationPortClient.getAccommodationAsync(accommodationRequest).Result.getAccommodationResponse.accommodation);
-
             CreateWebHostBuilder(args).Build().Run();
 
         }
+
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)

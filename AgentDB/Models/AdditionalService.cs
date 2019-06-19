@@ -8,11 +8,11 @@ namespace AgentApp.Models
 {
     public class AdditionalService
     {
-
         /// <remarks/>
         public string AdditionalServiceName { get; set; }
 
         /// <remarks/>
         public long Id { get; set; }
+
     }
 }

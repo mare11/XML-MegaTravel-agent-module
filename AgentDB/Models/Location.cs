@@ -31,5 +31,6 @@ namespace AgentApp.Models
 
         /// <remarks/>
         public long Id { get; set; }
+
     }
 }
