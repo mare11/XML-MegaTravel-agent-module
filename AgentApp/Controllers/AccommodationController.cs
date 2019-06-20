@@ -42,6 +42,7 @@ namespace AgentApp.Controllers
             return Ok(accTemp);
         }
 
+        //nije implrementiran servis za ovo u glavnom backend-u
         [HttpGet]
         public ActionResult<IEnumerable<Accommodation>> GetAccommodations()
         {
@@ -51,6 +52,21 @@ namespace AgentApp.Controllers
         [HttpGet("{id}")]
         public ActionResult<Accommodation> GetAccommodation(long id)
         {
+            //*** DA LI RADITI OVAKO ??? ***//
+
+            //AccommodationPortClient accPortClient = new AccommodationPortClient();
+            //getAccommodationRequest accRequest = new getAccommodationRequest();
+
+            //accRequest.id = id;
+
+            //var accTemp = accPortClient.getAccommodationAsync(accRequest);
+            //accTemp.Wait();
+
+            //AccommodationDTO accDTO = new AccommodationDTO();
+            //accDTO = accTemp.Result.getAccommodationResponse.AccommodationDTO;
+
+            //Accommodation accommodation = accDTO.CreateAccommodation();
+
             var acc = _context.Accommodations.Find(id);
 
             if(acc == null)
@@ -77,16 +93,31 @@ namespace AgentApp.Controllers
         [HttpDelete("{id}")]
         public ActionResult<Accommodation> DeleteAccommodation(long id)
         {
-            var acc = _context.Accommodations.Find(id);
-            if(acc == null)
+            AccommodationPortClient accPortClient = new AccommodationPortClient();
+            deleteAccommodationRequest accRequest = new deleteAccommodationRequest();
+
+            accRequest.id = id;
+
+            var accTemp = accPortClient.deleteAccommodationAsync(accRequest);
+            accTemp.Wait();
+
+            var response = accTemp.Result.deleteAccommodationResponse.flag;
+
+            if(response == true)
             {
-                return NotFound();
+                var acc = _context.Accommodations.Find(id);
+                if (acc == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Accommodations.Remove(acc);
+                _context.SaveChanges();
+
+                return acc;
             }
 
-            _context.Accommodations.Remove(acc);
-            _context.SaveChanges();
-
-            return acc;
+            return NotFound();
         }
     }
 }
