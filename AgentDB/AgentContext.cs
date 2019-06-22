@@ -18,6 +18,5 @@ namespace AgentDB
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationRating> ReservationRatings { get; set; }
         public DbSet<Unavailability> Unavailabilities { get; set; }
-        public DbSet<User> Users { get; set; }
     }
 }

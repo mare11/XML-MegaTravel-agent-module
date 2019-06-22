@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -15,7 +16,7 @@ namespace AgentApp.Models
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Namespace = "https://github.com/mare11/XML_MegaTravel/user")]
-        public User User { get; set; }
+        public long UserID { get; set; }
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType = "date")]
@@ -33,9 +34,12 @@ namespace AgentApp.Models
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Message")]
-        public Message[] Message { get; set; }
+        public List<Message> Messages { get; set; }
 
         /// <remarks/>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
+
+        //public long IdMainDB { get; set; }
     }
 }

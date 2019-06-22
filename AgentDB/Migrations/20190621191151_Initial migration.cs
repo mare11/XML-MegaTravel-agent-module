@@ -74,30 +74,10 @@ namespace AgentDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Lastname = table.Column<string>(nullable: true),
-                    Enabled = table.Column<bool>(nullable: false),
-                    Deleted = table.Column<bool>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Accommodations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     AccommodationTypeId = table.Column<long>(nullable: true),
                     Category = table.Column<int>(nullable: false),
                     FreeCancellation = table.Column<bool>(nullable: false),
@@ -175,13 +155,32 @@ namespace AgentDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReservationLong",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Value = table.Column<long>(nullable: false),
+                    AccommodationId = table.Column<long>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReservationLong", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ReservationLong_Accommodations_AccommodationId",
+                        column: x => x.AccommodationId,
+                        principalTable: "Accommodations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Reservations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     AccommodationId = table.Column<long>(nullable: true),
-                    UserId = table.Column<long>(nullable: true),
+                    UserID = table.Column<long>(nullable: false),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
                     Realized = table.Column<bool>(nullable: false),
@@ -200,12 +199,6 @@ namespace AgentDB.Migrations
                         name: "FK_Reservations_ReservationRatings_ReservationRatingId",
                         column: x => x.ReservationRatingId,
                         principalTable: "ReservationRatings",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Reservations_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -284,6 +277,11 @@ namespace AgentDB.Migrations
                 column: "AccommodationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ReservationLong_AccommodationId",
+                table: "ReservationLong",
+                column: "AccommodationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Reservations_AccommodationId",
                 table: "Reservations",
                 column: "AccommodationId");
@@ -292,11 +290,6 @@ namespace AgentDB.Migrations
                 name: "IX_Reservations_ReservationRatingId",
                 table: "Reservations",
                 column: "ReservationRatingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Reservations_UserId",
-                table: "Reservations",
-                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Unavailabilities_AccommodationId",
@@ -316,6 +309,9 @@ namespace AgentDB.Migrations
                 name: "PeriodPrices");
 
             migrationBuilder.DropTable(
+                name: "ReservationLong");
+
+            migrationBuilder.DropTable(
                 name: "Unavailabilities");
 
             migrationBuilder.DropTable(
@@ -326,9 +322,6 @@ namespace AgentDB.Migrations
 
             migrationBuilder.DropTable(
                 name: "ReservationRatings");
-
-            migrationBuilder.DropTable(
-                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "AccommodationTypes");

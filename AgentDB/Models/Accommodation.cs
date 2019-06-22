@@ -20,8 +20,10 @@ namespace AgentApp.Models
         public int Category { get; set; }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("AdditionalService")]
-        public AdditionalService[] AdditionalService { get; set; }
+        //[System.Xml.Serialization.XmlElementAttribute("AdditionalService")]
+        //public AdditionalService[] AdditionalService { get; set; }
+
+        public List<AdditionalService> AdditionalServices { get; set; }
 
         /// <remarks/>
         public bool FreeCancellation { get; set; }
@@ -49,15 +51,19 @@ namespace AgentApp.Models
         public decimal DefaultPrice { get; set; }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("PeriodPrice")]
-        public PeriodPrice[] PeriodPrice { get; set; }
+        //[System.Xml.Serialization.XmlElementAttribute("PeriodPrice")]
+        //public PeriodPrice[] PeriodPrice { get; set; }
+
+        public List<PeriodPrice> PeriodPrices { get; set; }
 
         /// <remarks/>
         public Location Location { get; set; }
 
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("Unavailability")]
-        public Unavailability[] Unavailability { get; set; }
+        //[System.Xml.Serialization.XmlElementAttribute("Unavailability")]
+        //public Unavailability[] Unavailability { get; set; }
+
+        public List<Unavailability> Unavailabilities { get; set; }
 
         /// <remarks/>
         //[System.Xml.Serialization.XmlElementAttribute("Reservation", Namespace = "https://github.com/mare11/XML_MegaTravel/reservation")]
@@ -66,9 +72,10 @@ namespace AgentApp.Models
         public List<ReservationLong> ReservationIds { get; set; }
 
         /// <remarks/>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
-        public long IdMainDB { get; set; }
+        //public long IdMainDB { get; set; }
 
     }
 }

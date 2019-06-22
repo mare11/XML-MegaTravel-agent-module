@@ -10,6 +10,6 @@ namespace AgentDB
         IEnumerable<Accommodation> GetAll();
         Accommodation GetById(long id);
         void Add(Accommodation newAccommodation);
-
+        
     }
 }

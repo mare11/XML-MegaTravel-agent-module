@@ -339,7 +339,7 @@ namespace AccommodationService
         {
             Accommodation acc = new Accommodation();
 
-            acc.IdMainDB = this.idField;
+            acc.Id = this.idField;
 
             if(this.accommodationTypeField != null)
             {
@@ -348,10 +348,12 @@ namespace AccommodationService
             acc.Category = this.category;
             if(this.additionalServiceField != null)
             {
+                List<AgentApp.Models.AdditionalService> addServices = new List<AgentApp.Models.AdditionalService>();
                 for (int i = 0; i < this.additionalServiceField.Length; ++i)
                 {
-                    acc.AdditionalService[i] = this.additionalServiceField[i].CreateAdditionalService();
+                    addServices.Add(this.additionalServiceField[i].CreateAdditionalService());
                 }
+                acc.AdditionalServices = addServices;
             }
             acc.FreeCancellation = this.freeCancellationField;
             acc.CancellationDays = this.cancellationDaysField;
@@ -361,10 +363,12 @@ namespace AccommodationService
             acc.DefaultPrice = this.defaultPriceField;
             if(this.periodPriceField != null)
             {
+                List<AgentApp.Models.PeriodPrice> prdPrices = new List<AgentApp.Models.PeriodPrice>();
                 for (int i = 0; i < this.periodPriceField.Length; ++i)
                 {
-                    acc.PeriodPrice[i] = this.periodPriceField[i].CreatePeriodPrice();
+                    prdPrices.Add(this.periodPriceField[i].CreatePeriodPrice());
                 }
+                acc.PeriodPrices = prdPrices;
             }
             if(this.locationField != null)
             {
@@ -372,10 +376,12 @@ namespace AccommodationService
             }
             if (this.unavailabilityField != null)
             {
+                List<AgentApp.Models.Unavailability> unvs = new List<AgentApp.Models.Unavailability>();
                 for (int i = 0; i < unavailabilityField.Length; ++i)
                 {
-                    acc.Unavailability[i] = this.unavailabilityField[i].CreateUnavailability();
+                    unvs.Add(this.unavailabilityField[i].CreateUnavailability());
                 }
+                acc.Unavailabilities = unvs;
             }
             if(this.reservationIdsField != null)
             {
@@ -692,11 +698,23 @@ namespace AccommodationService
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="")]
     public partial class Unavailability
     {
-        private long id;
+        private long idField;
 
         private System.DateTime startDateField;
         
         private System.DateTime endDateField;
+
+        public long id
+        {
+            get
+            {
+                return this.idField;
+            }
+            set
+            {
+                this.idField = value;
+            }
+        }
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType="date")]
@@ -729,7 +747,7 @@ namespace AccommodationService
         public AgentApp.Models.Unavailability CreateUnavailability()
         {
             AgentApp.Models.Unavailability unav = new AgentApp.Models.Unavailability();
-            unav.Id = this.id;
+            unav.Id = this.idField;
             unav.StartDate = this.startDate;
             unav.EndDate = this.endDate;
 

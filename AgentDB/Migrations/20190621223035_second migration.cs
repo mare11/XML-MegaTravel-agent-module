@@ -2,7 +2,7 @@
 
 namespace AgentDB.Migrations
 {
-    public partial class Fourthmigration : Migration
+    public partial class secondmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
