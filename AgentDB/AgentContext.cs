@@ -1,4 +1,5 @@
 ﻿using AgentApp.Models;
+using AgentDB.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -18,5 +19,7 @@ namespace AgentDB
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationRating> ReservationRatings { get; set; }
         public DbSet<Unavailability> Unavailabilities { get; set; }
+        public DbSet<AdditionalServicesOnly> AdditionalServicesOnlies { get; set; }
+
     }
 }

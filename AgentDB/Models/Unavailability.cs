@@ -8,7 +8,6 @@ namespace AgentApp.Models
 {
     public class Unavailability
     {
-
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(DataType = "date")]
         public System.DateTime StartDate { get; set; }

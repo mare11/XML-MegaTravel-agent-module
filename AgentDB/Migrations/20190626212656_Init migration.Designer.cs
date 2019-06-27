@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgentDB.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    [Migration("20190621191151_Initial migration")]
-    partial class Initialmigration
+    [Migration("20190626212656_Init migration")]
+    partial class Initmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -25,7 +25,7 @@ namespace AgentDB.Migrations
                 {
                     b.Property<long>("Id");
 
-                    b.Property<long?>("AccommodationTypeId");
+                    b.Property<long?>("AccommodationTypeFieldId");
 
                     b.Property<long?>("AgentId");
 
@@ -47,7 +47,7 @@ namespace AgentDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccommodationTypeId");
+                    b.HasIndex("AccommodationTypeFieldId");
 
                     b.HasIndex("AgentId");
 
@@ -58,9 +58,7 @@ namespace AgentDB.Migrations
 
             modelBuilder.Entity("AgentApp.Models.AccommodationType", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("Id");
 
                     b.Property<string>("TypeName");
 
@@ -88,9 +86,7 @@ namespace AgentDB.Migrations
 
             modelBuilder.Entity("AgentApp.Models.Agent", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("Id");
 
                     b.Property<string>("Adress");
 
@@ -113,9 +109,7 @@ namespace AgentDB.Migrations
 
             modelBuilder.Entity("AgentApp.Models.Location", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<long>("Id");
 
                     b.Property<string>("Address");
 
@@ -237,28 +231,11 @@ namespace AgentDB.Migrations
                     b.ToTable("Unavailabilities");
                 });
 
-            modelBuilder.Entity("AgentDB.Models.ReservationLong", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<long?>("AccommodationId");
-
-                    b.Property<long>("Value");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccommodationId");
-
-                    b.ToTable("ReservationLong");
-                });
-
             modelBuilder.Entity("AgentApp.Models.Accommodation", b =>
                 {
-                    b.HasOne("AgentApp.Models.AccommodationType", "AccommodationType")
+                    b.HasOne("AgentApp.Models.AccommodationType", "AccommodationTypeField")
                         .WithMany()
-                        .HasForeignKey("AccommodationTypeId");
+                        .HasForeignKey("AccommodationTypeFieldId");
 
                     b.HasOne("AgentApp.Models.Agent", "Agent")
                         .WithMany("Accommodation")
@@ -272,28 +249,28 @@ namespace AgentDB.Migrations
             modelBuilder.Entity("AgentApp.Models.AdditionalService", b =>
                 {
                     b.HasOne("AgentApp.Models.Accommodation")
-                        .WithMany("AdditionalService")
+                        .WithMany("AdditionalServices")
                         .HasForeignKey("AccommodationId");
                 });
 
             modelBuilder.Entity("AgentApp.Models.Message", b =>
                 {
                     b.HasOne("AgentApp.Models.Reservation")
-                        .WithMany("Message")
+                        .WithMany("Messages")
                         .HasForeignKey("ReservationId");
                 });
 
             modelBuilder.Entity("AgentApp.Models.PeriodPrice", b =>
                 {
                     b.HasOne("AgentApp.Models.Accommodation")
-                        .WithMany("PeriodPrice")
+                        .WithMany("PeriodPrices")
                         .HasForeignKey("AccommodationId");
                 });
 
             modelBuilder.Entity("AgentApp.Models.Reservation", b =>
                 {
                     b.HasOne("AgentApp.Models.Accommodation", "Accommodation")
-                        .WithMany()
+                        .WithMany("Reservations")
                         .HasForeignKey("AccommodationId");
 
                     b.HasOne("AgentApp.Models.ReservationRating", "ReservationRating")
@@ -304,14 +281,7 @@ namespace AgentDB.Migrations
             modelBuilder.Entity("AgentApp.Models.Unavailability", b =>
                 {
                     b.HasOne("AgentApp.Models.Accommodation")
-                        .WithMany("Unavailability")
-                        .HasForeignKey("AccommodationId");
-                });
-
-            modelBuilder.Entity("AgentDB.Models.ReservationLong", b =>
-                {
-                    b.HasOne("AgentApp.Models.Accommodation")
-                        .WithMany("ReservationIds")
+                        .WithMany("Unavailabilities")
                         .HasForeignKey("AccommodationId");
                 });
 #pragma warning restore 612, 618

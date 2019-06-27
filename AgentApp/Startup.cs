@@ -39,6 +39,7 @@ namespace AgentApp
             //poziva konekciju za bazu
             services.AddDbContext<AgentContext>(options 
                 => options.UseSqlServer(Configuration.GetConnectionString("AgentConnection")));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

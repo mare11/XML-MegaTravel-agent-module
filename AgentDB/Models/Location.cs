@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -30,6 +31,7 @@ namespace AgentApp.Models
         public decimal Longitude { get; set; }
 
         /// <remarks/>
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
 
     }

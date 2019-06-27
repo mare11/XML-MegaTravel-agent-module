@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgentDB.Migrations
 {
-    public partial class Initialmigration : Migration
+    public partial class Initmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,8 +12,7 @@ namespace AgentDB.Migrations
                 name: "AccommodationTypes",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     TypeName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -25,8 +24,7 @@ namespace AgentDB.Migrations
                 name: "Agents",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     Username = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true),
                     Email = table.Column<string>(nullable: true),
@@ -44,8 +42,7 @@ namespace AgentDB.Migrations
                 name: "Locations",
                 columns: table => new
                 {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Id = table.Column<long>(nullable: false),
                     Country = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
@@ -78,7 +75,7 @@ namespace AgentDB.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
-                    AccommodationTypeId = table.Column<long>(nullable: true),
+                    AccommodationTypeFieldId = table.Column<long>(nullable: true),
                     Category = table.Column<int>(nullable: false),
                     FreeCancellation = table.Column<bool>(nullable: false),
                     CancellationDays = table.Column<int>(nullable: false),
@@ -93,8 +90,8 @@ namespace AgentDB.Migrations
                 {
                     table.PrimaryKey("PK_Accommodations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Accommodations_AccommodationTypes_AccommodationTypeId",
-                        column: x => x.AccommodationTypeId,
+                        name: "FK_Accommodations_AccommodationTypes_AccommodationTypeFieldId",
+                        column: x => x.AccommodationTypeFieldId,
                         principalTable: "AccommodationTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -148,26 +145,6 @@ namespace AgentDB.Migrations
                     table.PrimaryKey("PK_PeriodPrices", x => x.Id);
                     table.ForeignKey(
                         name: "FK_PeriodPrices_Accommodations_AccommodationId",
-                        column: x => x.AccommodationId,
-                        principalTable: "Accommodations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ReservationLong",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Value = table.Column<long>(nullable: false),
-                    AccommodationId = table.Column<long>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReservationLong", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ReservationLong_Accommodations_AccommodationId",
                         column: x => x.AccommodationId,
                         principalTable: "Accommodations",
                         principalColumn: "Id",
@@ -247,9 +224,9 @@ namespace AgentDB.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accommodations_AccommodationTypeId",
+                name: "IX_Accommodations_AccommodationTypeFieldId",
                 table: "Accommodations",
-                column: "AccommodationTypeId");
+                column: "AccommodationTypeFieldId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accommodations_AgentId",
@@ -274,11 +251,6 @@ namespace AgentDB.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_PeriodPrices_AccommodationId",
                 table: "PeriodPrices",
-                column: "AccommodationId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ReservationLong_AccommodationId",
-                table: "ReservationLong",
                 column: "AccommodationId");
 
             migrationBuilder.CreateIndex(
@@ -307,9 +279,6 @@ namespace AgentDB.Migrations
 
             migrationBuilder.DropTable(
                 name: "PeriodPrices");
-
-            migrationBuilder.DropTable(
-                name: "ReservationLong");
 
             migrationBuilder.DropTable(
                 name: "Unavailabilities");

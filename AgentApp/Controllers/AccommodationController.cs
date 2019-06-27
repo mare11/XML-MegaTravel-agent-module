@@ -1,6 +1,7 @@
 ﻿using AccommodationService;
 using AgentApp.Models;
 using AgentDB;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +18,13 @@ namespace AgentApp.Controllers
 
         private readonly AgentContext _context;
 
-        public AccommodationController(AgentContext context) => _context = context;
+        public AccommodationController(AgentContext context, IMapper mapper)
+        {
+            _context = context;
 
-        [HttpPost]
+        }
+
+        [HttpPost] //izbrisi id posle testiranja
         public ActionResult<AccommodationDTO> AddAccommodation(AccommodationDTO body)
         {
             AccommodationPortClient accPortClient = new AccommodationPortClient();
@@ -33,7 +38,7 @@ namespace AgentApp.Controllers
 
             AccommodationDTO accTemp = new AccommodationDTO();
             accTemp = acc.Result.addAccommodationResponse.AccommodationDTO;
-            
+
             Accommodation accommodation = accTemp.CreateAccommodation();
 
             _context.Accommodations.Add(accommodation);
@@ -42,47 +47,60 @@ namespace AgentApp.Controllers
             return Ok(accTemp);
         }
 
+
         //nije implrementiran servis za ovo u glavnom backend-u
-        [HttpGet]
-        public ActionResult<IEnumerable<Accommodation>> GetAccommodations()
-        {
-            return _context.Accommodations;
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<Accommodation>> GetAccommodations(long id)
+        { 
+
+            return _context.Accommodations
+                .Include(accommodation => accommodation.AdditionalServices)
+                .Include(accommodation => accommodation.AccommodationTypeField)
+                .Include(accommodation => accommodation.Location)
+                .Include(accommodation => accommodation.Unavailabilities)
+                .Include(accommodation => accommodation.PeriodPrices).ToList();
+
         }
 
         [HttpGet("{id}")]
         public ActionResult<Accommodation> GetAccommodation(long id)
         {
-            //*** DA LI RADITI OVAKO ??? ***//
+            var acc = _context.Accommodations
+                .Include(accommodation => accommodation.AdditionalServices)
+                .Include(accommodation => accommodation.Location)
+                .Include(accommodation => accommodation.AccommodationTypeField)
+                .Include(accommodation => accommodation.Unavailabilities)
+                .Include(accommodation => accommodation.PeriodPrices)
+                .FirstOrDefault(accommodation => accommodation.Id == id);
 
-            //AccommodationPortClient accPortClient = new AccommodationPortClient();
-            //getAccommodationRequest accRequest = new getAccommodationRequest();
-
-            //accRequest.id = id;
-
-            //var accTemp = accPortClient.getAccommodationAsync(accRequest);
-            //accTemp.Wait();
-
-            //AccommodationDTO accDTO = new AccommodationDTO();
-            //accDTO = accTemp.Result.getAccommodationResponse.AccommodationDTO;
-
-            //Accommodation accommodation = accDTO.CreateAccommodation();
-
-            var acc = _context.Accommodations.Find(id);
-
-            if(acc == null)
+            if (acc == null)
             {
                 return NotFound();
             }
+
             return acc;
         }
 
         [HttpPut("{id}")]
-        public ActionResult PutAccommodation(long id, Accommodation acc)
+        public ActionResult PutAccommodation(Accommodation acc)
         {
-            if(id != acc.Id)
+            AccommodationPortClient accPortClient = new AccommodationPortClient();
+            updateAccommodationRequest accRequest = new updateAccommodationRequest();
+
+            AccommodationDTO accDTO = new AccommodationDTO(acc);
+            List<AccommodationService.AdditionalService> ads = new List<AccommodationService.AdditionalService>();
+            for(int i = 0; i < acc.AdditionalServices.Count; ++i)
             {
-                return BadRequest();
+                AgentDB.Models.AdditionalServicesOnly additionalService = _context.AdditionalServicesOnlies.FirstOrDefault(addServ => addServ.AdditionalServiceName == acc.AdditionalServices[i].AdditionalServiceName);
+                AccommodationService.AdditionalService addService = new AccommodationService.AdditionalService();
+                addService.Id = additionalService.Id;
+                addService.additionalServiceName = additionalService.AdditionalServiceName;
+                ads.Add(addService);
             }
+
+            accDTO.AdditionalService = ads.ToArray();
+
+            accRequest.AccommodationDTO = accDTO;
 
             _context.Entry(acc).State = EntityState.Modified;
             _context.SaveChanges();
@@ -90,34 +108,34 @@ namespace AgentApp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult<Accommodation> DeleteAccommodation(long id)
-        {
-            AccommodationPortClient accPortClient = new AccommodationPortClient();
-            deleteAccommodationRequest accRequest = new deleteAccommodationRequest();
+        //[HttpDelete("{id}")] //obezbediti delete za web servis
+        //public ActionResult<Accommodation> DeleteAccommodation(long id)
+        //{
+        //    var acc = _context.Accommodations.Find(id);
+        //    if (acc == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            accRequest.id = id;
+        //    AccommodationPortClient accPortClient = new AccommodationPortClient();
+        //    deleteAccommodationRequest accRequest = new deleteAccommodationRequest();
 
-            var accTemp = accPortClient.deleteAccommodationAsync(accRequest);
-            accTemp.Wait();
+        //    accRequest.id = id;
 
-            var response = accTemp.Result.deleteAccommodationResponse.flag;
+        //    var accTemp = accPortClient.deleteAccommodationAsync(accRequest);
+        //    accTemp.Wait();
 
-            if(response == true)
-            {
-                var acc = _context.Accommodations.Find(id);
-                if (acc == null)
-                {
-                    return NotFound();
-                }
+        //    var response = accTemp.Result.deleteAccommodationResponse.flag;
 
-                _context.Accommodations.Remove(acc);
-                _context.SaveChanges();
+        //    if(response == true)
+        //    {
+        //        _context.Accommodations.Remove(acc);
+        //        _context.SaveChanges();
 
-                return acc;
-            }
+        //        return acc;
+        //    }
 
-            return NotFound();
-        }
+        //    return NotFound();
+        //}
     }
 }

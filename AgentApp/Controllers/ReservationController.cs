@@ -31,7 +31,6 @@ namespace AgentApp.Controllers
 
             ReservationService.Reservation[] reservations = resTemp.Result.getReservationResponse1;
 
-
             List<Models.Reservation> ress = new List<Models.Reservation>();
             ress = _context.Reservations.ToList<Models.Reservation>();
 
@@ -56,7 +55,7 @@ namespace AgentApp.Controllers
 
                 if(!flag)
                 {
-                    _context.Add(res);
+                    _context.Reservations.Add(res);
                     _context.SaveChanges();
                 }
 

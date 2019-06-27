@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Serialization;
+using System.Text;
 
-namespace AgentApp.Models
+namespace AgentDB.Models
 {
-    public class AccommodationType
+    public class AdditionalServicesOnly
     {
-        /// <remarks/>
-        public string TypeName { get; set; }
+        public string AdditionalServiceName { get; set; }
 
         /// <remarks/>
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public long Id { get; set; }
-
     }
 }

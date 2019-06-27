@@ -83,8 +83,9 @@ namespace AccommodationService
         private AccommodationType accommodationTypeField;
         
         private int categoryField;
-        
+
         private AdditionalService[] additionalServiceField;
+       // private AccommodationAdditionalService[] accommodationAdditionalServicesField;
         
         private bool freeCancellationField;
         
@@ -151,9 +152,9 @@ namespace AccommodationService
                 this.categoryField = value;
             }
         }
-        
+
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute("AdditionalService", Namespace="")]
+        [System.Xml.Serialization.XmlElementAttribute("AdditionalService", Namespace = "")]
         public AdditionalService[] AdditionalService
         {
             get
@@ -165,7 +166,7 @@ namespace AccommodationService
                 this.additionalServiceField = value;
             }
         }
-        
+
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute()]
         public bool freeCancellation
@@ -334,6 +335,37 @@ namespace AccommodationService
             }
         }
 
+        public AccommodationDTO()
+        {
+
+        }
+
+        public AccommodationDTO(Accommodation acc)
+        {
+            this.idField = acc.Id;
+            this.accommodationTypeField = new AccommodationType(acc.AccommodationTypeField);
+            this.categoryField = acc.Category;
+            this.freeCancellationField = acc.FreeCancellation;
+            this.cancellationDaysField = acc.CancellationDays;
+            this.cancellationPriceField = acc.CancellationPrice;
+            this.descriptionField = acc.Description;
+            this.numberOfPersonsField = acc.NumberOfPersons;
+            this.defaultPriceField = acc.DefaultPrice;
+            List<PeriodPrice> pp = new List<PeriodPrice>();
+            for(int i = 0; i < acc.PeriodPrices.Count; ++i)
+            {
+                pp.Add(new PeriodPrice(acc.PeriodPrices[i]));
+            }
+            this.periodPriceField = pp.ToArray();
+            this.locationField = new Location(acc.Location);
+            List<Unavailability> unav = new List<Unavailability>();
+            for(int i = 0; i < acc.Unavailabilities.Count; ++i)
+            {
+                unav.Add(new Unavailability(acc.Unavailabilities[i]));
+            }
+            this.unavailabilityField = unav.ToArray();
+        }
+
         //neka public metoda
         public Accommodation CreateAccommodation()
         {
@@ -341,19 +373,19 @@ namespace AccommodationService
 
             acc.Id = this.idField;
 
-            if(this.accommodationTypeField != null)
+            if (this.accommodationTypeField != null)
             {
-                acc.AccommodationType = this.accommodationTypeField.CreateAccommodationType();
+                acc.AccommodationTypeField = this.accommodationTypeField.CreateAccommodationType();
             }
             acc.Category = this.category;
-            if(this.additionalServiceField != null)
+
+            List<AgentApp.Models.AdditionalService> accAddServ = new List<AgentApp.Models.AdditionalService>();
+            if (this.additionalServiceField != null)
             {
-                List<AgentApp.Models.AdditionalService> addServices = new List<AgentApp.Models.AdditionalService>();
                 for (int i = 0; i < this.additionalServiceField.Length; ++i)
                 {
-                    addServices.Add(this.additionalServiceField[i].CreateAdditionalService());
+                    accAddServ.Add(this.additionalServiceField[i].CreateAdditionalService());
                 }
-                acc.AdditionalServices = addServices;
             }
             acc.FreeCancellation = this.freeCancellationField;
             acc.CancellationDays = this.cancellationDaysField;
@@ -361,7 +393,8 @@ namespace AccommodationService
             acc.Images = this.imagesField;
             acc.NumberOfPersons = this.numberOfPersonsField;
             acc.DefaultPrice = this.defaultPriceField;
-            if(this.periodPriceField != null)
+            acc.CancellationPrice = this.cancellationPriceField;
+            if (this.periodPriceField != null)
             {
                 List<AgentApp.Models.PeriodPrice> prdPrices = new List<AgentApp.Models.PeriodPrice>();
                 for (int i = 0; i < this.periodPriceField.Length; ++i)
@@ -370,7 +403,7 @@ namespace AccommodationService
                 }
                 acc.PeriodPrices = prdPrices;
             }
-            if(this.locationField != null)
+            if (this.locationField != null)
             {
                 acc.Location = this.locationField.CreateLocation();
             }
@@ -383,20 +416,10 @@ namespace AccommodationService
                 }
                 acc.Unavailabilities = unvs;
             }
-            if(this.reservationIdsField != null)
-            {
-                List<ReservationLong> resIds = new List<ReservationLong>();
-                for (int i = 0; i < reservationIdsField.Length; ++i)
-                {
-                    ReservationLong reservationLong = new ReservationLong();
-                    reservationLong.Value = this.reservationIdsField[i];
-                    resIds.Add(reservationLong);
-                }
-                acc.ReservationIds = resIds;
-            }
 
             return acc;
         }
+
     }
     
     /// <remarks/>
@@ -433,6 +456,17 @@ namespace AccommodationService
             {
                 this.id = value;
             }
+        }
+
+        public AccommodationType()
+        {
+
+        }
+
+        public AccommodationType(AgentApp.Models.AccommodationType accType)
+        {
+            this.id = accType.Id;
+            this.typeNameField = accType.TypeName;
         }
 
         public AgentApp.Models.AccommodationType CreateAccommodationType()
@@ -479,6 +513,11 @@ namespace AccommodationService
             {
                 this.additionalServiceNameField = value;
             }
+        }
+
+        public AdditionalService()
+        {
+
         }
 
         public AgentApp.Models.AdditionalService CreateAdditionalService()
@@ -560,6 +599,19 @@ namespace AccommodationService
             }
         }
 
+        public PeriodPrice()
+        {
+
+        }
+
+        public PeriodPrice(AgentApp.Models.PeriodPrice pp)
+        {
+            this.id = pp.Id;
+            this.priceField = pp.Price;
+            this.startDateField = pp.StartDate;
+            this.endDateField = pp.EndDate;
+        }
+
         public AgentApp.Models.PeriodPrice CreatePeriodPrice()
         {
             AgentApp.Models.PeriodPrice perPrice = new AgentApp.Models.PeriodPrice();
@@ -594,6 +646,16 @@ namespace AccommodationService
         {
             this.latitudeField = ((decimal)(0.0m));
             this.longitudeField = ((decimal)(0.0m));
+        }
+
+        public Location(AgentApp.Models.Location loc)
+        {
+            this.addressField = loc.Address;
+            this.cityField = loc.City;
+            this.countryField = loc.Country;
+            this.id = loc.Id;
+            this.latitudeField = loc.Latitude;
+            this.longitudeField = loc.Longitude;
         }
         
         public long Id
@@ -703,6 +765,18 @@ namespace AccommodationService
         private System.DateTime startDateField;
         
         private System.DateTime endDateField;
+
+        public Unavailability()
+        {
+
+        }
+
+        public Unavailability(AgentApp.Models.Unavailability unav)
+        {
+            this.idField = unav.Id;
+            this.startDateField = unav.StartDate;
+            this.endDateField = unav.EndDate;
+        }
 
         public long id
         {
@@ -1124,11 +1198,11 @@ namespace AccommodationService
     public partial class getAccommodationResponse
     {
         
-        private AccommodationDTO accommodationDTOField;
+        private List<AccommodationDTO> accommodationDTOField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute(Order=0)]
-        public AccommodationDTO AccommodationDTO
+        public List<AccommodationDTO> AccommodationDTO
         {
             get
             {
