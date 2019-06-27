@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgentApp.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AdditionalServicesController : ControllerBase
     {
         private readonly AgentContext _context;
