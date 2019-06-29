@@ -122,8 +122,8 @@ namespace AccommodationService
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="")]
-        public AccommodationType AccommodationType
+        [System.Xml.Serialization.XmlElementAttribute("AccommodationType", Namespace="")]
+        public AccommodationType accommodationType
         {
             get
             {
@@ -151,7 +151,7 @@ namespace AccommodationService
 
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("AdditionalService", Namespace = "")]
-        public AdditionalService[] AdditionalService
+        public AdditionalService[] additionalServices
         {
             get
             {
@@ -277,7 +277,7 @@ namespace AccommodationService
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("PeriodPrice", Namespace="")]
-        public PeriodPrice[] PeriodPrice
+        public PeriodPrice[] periodPrices
         {
             get
             {
@@ -290,8 +290,8 @@ namespace AccommodationService
         }
         
         /// <remarks/>
-        [System.Xml.Serialization.XmlElementAttribute(Namespace="")]
-        public Location Location
+        [System.Xml.Serialization.XmlElementAttribute("Location", Namespace="")]
+        public Location location
         {
             get
             {
@@ -305,7 +305,7 @@ namespace AccommodationService
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute("Unavailability", Namespace="")]
-        public Unavailability[] Unavailability
+        public Unavailability[] unavailabilities
         {
             get
             {
@@ -347,6 +347,7 @@ namespace AccommodationService
             this.descriptionField = acc.Description;
             this.numberOfPersonsField = acc.NumberOfPersons;
             this.defaultPriceField = acc.DefaultPrice;
+            this.agentIdField = acc.agentId;
             List<PeriodPrice> pp = new List<PeriodPrice>();
             for(int i = 0; i < acc.PeriodPrices.Count; ++i)
             {
@@ -390,6 +391,7 @@ namespace AccommodationService
             acc.NumberOfPersons = this.numberOfPersonsField;
             acc.DefaultPrice = this.defaultPriceField;
             acc.CancellationPrice = this.cancellationPriceField;
+            acc.agentId = this.agentIdField;
             if (this.periodPriceField != null)
             {
                 List<AgentApp.Models.PeriodPrice> prdPrices = new List<AgentApp.Models.PeriodPrice>();

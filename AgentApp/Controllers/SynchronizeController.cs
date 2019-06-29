@@ -88,7 +88,6 @@ namespace AgentApp.Controllers
             _context.RemoveRange(_context.ReservationRatings);
             _context.RemoveRange(_context.Accommodations);
             _context.RemoveRange(_context.AccommodationTypes);
-            _context.RemoveRange(_context.Agents);
             _context.RemoveRange(_context.Locations);
 
             _context.SaveChanges();

@@ -40,7 +40,6 @@ namespace AgentApp.Controllers
             
             Accommodation accommodation = accTemp.CreateAccommodation();
 
-
             // attach type in context so it doesn't get saved in database again and check the same for location
             _context.AccommodationTypes.Attach(accommodation.AccommodationType);
 
@@ -117,7 +116,7 @@ namespace AgentApp.Controllers
                 ads.Add(addService);
             }
 
-            accDTO.AdditionalService = ads.ToArray();
+            accDTO.additionalServices = ads.ToArray();
 
             accRequest.AccommodationDTO = accDTO;
 

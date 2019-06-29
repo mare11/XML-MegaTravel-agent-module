@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgentDB.Migrations
 {
     [DbContext(typeof(AgentContext))]
-    [Migration("20190626212656_Init migration")]
-    partial class Initmigration
+    [Migration("20190629105715_initial migration")]
+    partial class initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,15 +27,15 @@ namespace AgentDB.Migrations
 
                     b.Property<long?>("AccommodationTypeId");
 
-                    b.Property<long?>("AgentId");
-
                     b.Property<int>("CancellationDays");
 
-                    b.Property<decimal>("CancellationPrice");
+                    b.Property<decimal>("CancellationPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Category");
 
-                    b.Property<decimal>("DefaultPrice");
+                    b.Property<decimal>("DefaultPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Description");
 
@@ -45,11 +45,11 @@ namespace AgentDB.Migrations
 
                     b.Property<int>("NumberOfPersons");
 
+                    b.Property<long>("agentId");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AccommodationTypeId");
-
-                    b.HasIndex("AgentId");
 
                     b.HasIndex("LocationId");
 
@@ -84,29 +84,6 @@ namespace AgentDB.Migrations
                     b.ToTable("AdditionalServices");
                 });
 
-            modelBuilder.Entity("AgentApp.Models.Agent", b =>
-                {
-                    b.Property<long>("Id");
-
-                    b.Property<string>("Adress");
-
-                    b.Property<int>("BussinesID");
-
-                    b.Property<string>("Email");
-
-                    b.Property<string>("Lastname");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Password");
-
-                    b.Property<string>("Username");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Agents");
-                });
-
             modelBuilder.Entity("AgentApp.Models.Location", b =>
                 {
                     b.Property<long>("Id");
@@ -117,9 +94,11 @@ namespace AgentDB.Migrations
 
                     b.Property<string>("Country");
 
-                    b.Property<decimal>("Latitude");
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,4)");
 
-                    b.Property<decimal>("Longitude");
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,4)");
 
                     b.HasKey("Id");
 
@@ -157,7 +136,8 @@ namespace AgentDB.Migrations
 
                     b.Property<DateTime>("EndDate");
 
-                    b.Property<decimal>("Price");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("StartDate");
 
@@ -231,15 +211,22 @@ namespace AgentDB.Migrations
                     b.ToTable("Unavailabilities");
                 });
 
+            modelBuilder.Entity("AgentDB.Models.AdditionalServicesOnly", b =>
+                {
+                    b.Property<long>("Id");
+
+                    b.Property<string>("AdditionalServiceName");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdditionalServicesOnlies");
+                });
+
             modelBuilder.Entity("AgentApp.Models.Accommodation", b =>
                 {
                     b.HasOne("AgentApp.Models.AccommodationType", "AccommodationType")
                         .WithMany()
                         .HasForeignKey("AccommodationTypeId");
-
-                    b.HasOne("AgentApp.Models.Agent", "Agent")
-                        .WithMany("Accommodation")
-                        .HasForeignKey("AgentId");
 
                     b.HasOne("AgentApp.Models.Location", "Location")
                         .WithMany()

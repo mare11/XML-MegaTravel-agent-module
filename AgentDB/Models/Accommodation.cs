@@ -33,7 +33,7 @@ namespace AgentApp.Models
         /// <remarks/>
         public int NumberOfPersons { get; set; }
 
-        public Agent Agent { get; set; }
+        public long agentId { get; set; }
         /// <remarks/>
         [Column(TypeName = "decimal(18,2)")]
         public decimal DefaultPrice { get; set; }

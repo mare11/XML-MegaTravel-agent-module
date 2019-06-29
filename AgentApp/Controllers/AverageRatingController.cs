@@ -18,7 +18,17 @@ namespace AgentApp.Controllers
         {
             string ratingString = GetAverageRatings(id).Result;
             var result = JsonConvert.DeserializeObject<AverageRatingCloud[]>(ratingString);
-            return result[0];
+            if(result.Length > 0)
+            {
+                return result[0];
+            }
+            else
+            {
+                AverageRatingCloud averageRating = new AverageRatingCloud();
+                averageRating.AccommodationId = id;
+                averageRating.AverageRating = 0.0;
+                return averageRating;
+            }
         }
 
         static async Task<string> GetAverageRatings(long id)

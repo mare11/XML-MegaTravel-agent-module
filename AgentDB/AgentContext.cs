@@ -12,7 +12,6 @@ namespace AgentDB
         public DbSet<Accommodation> Accommodations { get; set; }
         public DbSet<AccommodationType> AccommodationTypes { get; set; }
         public DbSet<AdditionalService> AdditionalServices { get; set; }
-        public DbSet<Agent> Agents { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<PeriodPrice> PeriodPrices { get; set; }

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgentDB.Migrations
 {
-    public partial class Initmigration : Migration
+    public partial class initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,21 +21,15 @@ namespace AgentDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Agents",
+                name: "AdditionalServicesOnlies",
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    Name = table.Column<string>(nullable: true),
-                    Lastname = table.Column<string>(nullable: true),
-                    Adress = table.Column<string>(nullable: true),
-                    BussinesID = table.Column<int>(nullable: false)
+                    AdditionalServiceName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Agents", x => x.Id);
+                    table.PrimaryKey("PK_AdditionalServicesOnlies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,8 +40,8 @@ namespace AgentDB.Migrations
                     Country = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     Address = table.Column<string>(nullable: true),
-                    Latitude = table.Column<decimal>(nullable: false),
-                    Longitude = table.Column<decimal>(nullable: false)
+                    Latitude = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
+                    Longitude = table.Column<decimal>(type: "decimal(18,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,11 +73,11 @@ namespace AgentDB.Migrations
                     Category = table.Column<int>(nullable: false),
                     FreeCancellation = table.Column<bool>(nullable: false),
                     CancellationDays = table.Column<int>(nullable: false),
-                    CancellationPrice = table.Column<decimal>(nullable: false),
+                    CancellationPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     Description = table.Column<string>(nullable: true),
                     NumberOfPersons = table.Column<int>(nullable: false),
-                    AgentId = table.Column<long>(nullable: true),
-                    DefaultPrice = table.Column<decimal>(nullable: false),
+                    agentId = table.Column<long>(nullable: false),
+                    DefaultPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     LocationId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
@@ -93,12 +87,6 @@ namespace AgentDB.Migrations
                         name: "FK_Accommodations_AccommodationTypes_AccommodationTypeId",
                         column: x => x.AccommodationTypeId,
                         principalTable: "AccommodationTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Accommodations_Agents_AgentId",
-                        column: x => x.AgentId,
-                        principalTable: "Agents",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -137,7 +125,7 @@ namespace AgentDB.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     StartDate = table.Column<DateTime>(nullable: false),
                     EndDate = table.Column<DateTime>(nullable: false),
-                    Price = table.Column<decimal>(nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     AccommodationId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
@@ -229,11 +217,6 @@ namespace AgentDB.Migrations
                 column: "AccommodationTypeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accommodations_AgentId",
-                table: "Accommodations",
-                column: "AgentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Accommodations_LocationId",
                 table: "Accommodations",
                 column: "LocationId");
@@ -275,6 +258,9 @@ namespace AgentDB.Migrations
                 name: "AdditionalServices");
 
             migrationBuilder.DropTable(
+                name: "AdditionalServicesOnlies");
+
+            migrationBuilder.DropTable(
                 name: "Messages");
 
             migrationBuilder.DropTable(
@@ -294,9 +280,6 @@ namespace AgentDB.Migrations
 
             migrationBuilder.DropTable(
                 name: "AccommodationTypes");
-
-            migrationBuilder.DropTable(
-                name: "Agents");
 
             migrationBuilder.DropTable(
                 name: "Locations");
