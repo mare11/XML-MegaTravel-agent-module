@@ -75,7 +75,7 @@ namespace AgentDB.Migrations
                 columns: table => new
                 {
                     Id = table.Column<long>(nullable: false),
-                    AccommodationTypeFieldId = table.Column<long>(nullable: true),
+                    AccommodationTypeId = table.Column<long>(nullable: true),
                     Category = table.Column<int>(nullable: false),
                     FreeCancellation = table.Column<bool>(nullable: false),
                     CancellationDays = table.Column<int>(nullable: false),
@@ -90,8 +90,8 @@ namespace AgentDB.Migrations
                 {
                     table.PrimaryKey("PK_Accommodations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Accommodations_AccommodationTypes_AccommodationTypeFieldId",
-                        column: x => x.AccommodationTypeFieldId,
+                        name: "FK_Accommodations_AccommodationTypes_AccommodationTypeId",
+                        column: x => x.AccommodationTypeId,
                         principalTable: "AccommodationTypes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -224,9 +224,9 @@ namespace AgentDB.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Accommodations_AccommodationTypeFieldId",
+                name: "IX_Accommodations_AccommodationTypeId",
                 table: "Accommodations",
-                column: "AccommodationTypeFieldId");
+                column: "AccommodationTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Accommodations_AgentId",

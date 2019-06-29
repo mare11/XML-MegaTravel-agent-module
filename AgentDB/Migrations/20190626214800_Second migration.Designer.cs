@@ -25,7 +25,7 @@ namespace AgentDB.Migrations
                 {
                     b.Property<long>("Id");
 
-                    b.Property<long?>("AccommodationTypeFieldId");
+                    b.Property<long?>("AccommodationTypeId");
 
                     b.Property<long?>("AgentId");
 
@@ -47,7 +47,7 @@ namespace AgentDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AccommodationTypeFieldId");
+                    b.HasIndex("AccommodationTypeId");
 
                     b.HasIndex("AgentId");
 
@@ -244,9 +244,9 @@ namespace AgentDB.Migrations
 
             modelBuilder.Entity("AgentApp.Models.Accommodation", b =>
                 {
-                    b.HasOne("AgentApp.Models.AccommodationType", "AccommodationTypeField")
+                    b.HasOne("AgentApp.Models.AccommodationType", "AccommodationType")
                         .WithMany()
-                        .HasForeignKey("AccommodationTypeFieldId");
+                        .HasForeignKey("AccommodationTypeId");
 
                     b.HasOne("AgentApp.Models.Agent", "Agent")
                         .WithMany("Accommodation")

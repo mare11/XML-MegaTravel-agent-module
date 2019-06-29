@@ -334,16 +334,14 @@ namespace ReservationService
                 resDTO.ReservationRating = this.reservationRatingField.CreateReservationRating();
             }
             resDTO.Realized = this.realizedField;
+            resDTO.Messages = new List<AgentApp.Models.Message>();
             if(this.messageField != null)
             {
-                List<AgentApp.Models.Message> msgs = new List<AgentApp.Models.Message>();
                 for(int i = 0; i < this.messageField.Length; ++i) 
                 {
-                    msgs.Add(this.messageField[i].CreateMessage());
+                    resDTO.Messages.Add(this.messageField[i].CreateMessage());
                 }
-                resDTO.Messages = msgs;
             }
-
 
             return resDTO;
         }

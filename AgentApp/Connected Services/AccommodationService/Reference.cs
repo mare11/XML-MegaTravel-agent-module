@@ -7,17 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
-using System;
 using AgentApp.Models;
-using AgentDB.Models;
 using System.Collections.Generic;
 
 namespace AccommodationService
 {
-    
-    
+
+
     [System.CodeDom.Compiler.GeneratedCodeAttribute("dotnet-svcutil", "1.0.0.1")]
     [System.ServiceModel.ServiceContractAttribute(Namespace="", ConfigurationName="AccommodationService.AccommodationPort")]
     public interface AccommodationPort
@@ -343,7 +339,7 @@ namespace AccommodationService
         public AccommodationDTO(Accommodation acc)
         {
             this.idField = acc.Id;
-            this.accommodationTypeField = new AccommodationType(acc.AccommodationTypeField);
+            this.accommodationTypeField = new AccommodationType(acc.AccommodationType);
             this.categoryField = acc.Category;
             this.freeCancellationField = acc.FreeCancellation;
             this.cancellationDaysField = acc.CancellationDays;
@@ -375,16 +371,16 @@ namespace AccommodationService
 
             if (this.accommodationTypeField != null)
             {
-                acc.AccommodationTypeField = this.accommodationTypeField.CreateAccommodationType();
+                acc.AccommodationType = this.accommodationTypeField.CreateAccommodationType();
             }
             acc.Category = this.category;
 
-            List<AgentApp.Models.AdditionalService> accAddServ = new List<AgentApp.Models.AdditionalService>();
+           acc.AdditionalServices = new List<AgentApp.Models.AdditionalService>();
             if (this.additionalServiceField != null)
             {
                 for (int i = 0; i < this.additionalServiceField.Length; ++i)
                 {
-                    accAddServ.Add(this.additionalServiceField[i].CreateAdditionalService());
+                    acc.AdditionalServices.Add(this.additionalServiceField[i].CreateAdditionalService());
                 }
             }
             acc.FreeCancellation = this.freeCancellationField;
@@ -430,7 +426,7 @@ namespace AccommodationService
     {
         
         private string typeNameField;
-        private long id;
+        private long idField;
         
         /// <remarks/>
         [System.Xml.Serialization.XmlElementAttribute()]
@@ -446,15 +442,17 @@ namespace AccommodationService
             }
         }
 
-        public long Id
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute()]
+        public long id
         {
             get
             {
-                return this.id;
+                return this.idField;
             }
             set
             {
-                this.id = value;
+                this.idField = value;
             }
         }
 
@@ -465,15 +463,15 @@ namespace AccommodationService
 
         public AccommodationType(AgentApp.Models.AccommodationType accType)
         {
-            this.id = accType.Id;
+            this.idField = accType.Id;
             this.typeNameField = accType.TypeName;
         }
 
         public AgentApp.Models.AccommodationType CreateAccommodationType()
         {
             AgentApp.Models.AccommodationType accType = new AgentApp.Models.AccommodationType();
-            accType.TypeName = this.typeName;
-            accType.Id = this.id;
+            accType.TypeName = this.typeNameField;
+            accType.Id = this.idField;
             return accType;
         }
 
@@ -487,17 +485,19 @@ namespace AccommodationService
     {
 
         private string additionalServiceNameField;
-        private long id;
+        private long idField;
 
-        public long Id
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute()]
+        public long id
         {
             get
             {
-                return this.id;
+                return this.idField;
             }
             set
             {
-                this.id = value;
+                this.idField = value;
             }
         }
 
@@ -523,7 +523,7 @@ namespace AccommodationService
         public AgentApp.Models.AdditionalService CreateAdditionalService()
         {
             AgentApp.Models.AdditionalService addService = new AgentApp.Models.AdditionalService();
-            addService.Id = this.id;
+            //addService.Id = this.idField;
             addService.AdditionalServiceName = this.additionalServiceNameField;
 
             return addService;
@@ -545,6 +545,8 @@ namespace AccommodationService
         
         private decimal priceField;
 
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute()]
         public long Id
         {
             get
@@ -630,7 +632,7 @@ namespace AccommodationService
     [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true, Namespace="")]
     public partial class Location
     {
-        private long id;
+        private long idField;
 
         private string countryField;
         
@@ -653,20 +655,22 @@ namespace AccommodationService
             this.addressField = loc.Address;
             this.cityField = loc.City;
             this.countryField = loc.Country;
-            this.id = loc.Id;
+            this.idField = loc.Id;
             this.latitudeField = loc.Latitude;
             this.longitudeField = loc.Longitude;
         }
-        
-        public long Id
+
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute()]
+        public long id
         {
             get
             {
-                return this.id;
+                return this.idField;
             }
             set
             {
-                this.id = value;
+                this.idField = value;
             }
         }
 
@@ -743,7 +747,7 @@ namespace AccommodationService
         public AgentApp.Models.Location CreateLocation()
         {
             AgentApp.Models.Location loc = new AgentApp.Models.Location();
-            loc.Id = this.id;
+            loc.Id = this.idField;
             loc.Address = this.addressField;
             loc.City = this.cityField;
             loc.Country = this.countryField;
@@ -778,6 +782,8 @@ namespace AccommodationService
             this.endDateField = unav.EndDate;
         }
 
+        /// <remarks/>
+        [System.Xml.Serialization.XmlElementAttribute()]
         public long id
         {
             get

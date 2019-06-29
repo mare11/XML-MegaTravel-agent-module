@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AgentApp.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class AdditionalServicesController : ControllerBase
     {
         private readonly AgentContext _context;
@@ -29,19 +31,44 @@ namespace AgentApp.Controllers
             currentServices = _context.AdditionalServicesOnlies.ToList();
 
             //brisem sve additionalServices iz baze i spremam je za upis novih vrednosti
-            if (currentServices != null)
-            {
-                _context.RemoveRange(currentServices);
-                _context.SaveChanges();
-            }
+            //if (currentServices != null)
+            //{
+            //    _context.RemoveRange(currentServices);
+            //    _context.SaveChanges();
+            //}
 
             //upis novih vrednosti iz glavne baze(update)
-            int n = 0;
-            foreach (AccommodationService.AdditionalService addService in tempList)
+            for (int i = 0; i < tempList.Count; ++i)
             {
-                _context.AdditionalServices.Add(tempList.ElementAt(n).CreateAdditionalService());
+                AdditionalService addService = tempList[i];
+                bool flag = false;
+                for (int j = 0; j < currentServices.Count; ++j)
+                {
+                    if (tempList.ElementAt(i).id == currentServices.ElementAt(j).Id)
+                    {
+                        currentServices.RemoveAt(j);
+                        flag = true;
+                        break;
+                    }
+                }
+
+                if (!flag)
+                {
+                AgentDB.Models.AdditionalServicesOnly only = new AgentDB.Models.AdditionalServicesOnly();
+                only.Id = addService.id;
+                only.AdditionalServiceName = addService.additionalServiceName;
+                _context.AdditionalServicesOnlies.Add(only);
                 _context.SaveChanges();
-                ++n;
+                }
+            }
+
+            if (currentServices.Count > 0)
+            {
+                for (int i = 0; i < currentServices.Count; ++i)
+                {
+                    _context.AdditionalServicesOnlies.Remove(currentServices.ElementAt(i));
+                    _context.SaveChanges();
+                }
             }
 
             return _context.AdditionalServicesOnlies;

@@ -14,7 +14,7 @@ namespace AgentApp.Models
     {
         public List<AdditionalService> AdditionalServices { get; set; }
         /// <remarks/>
-        public AccommodationType AccommodationTypeField { get; set; }
+        public AccommodationType AccommodationType { get; set; }
         /// <remarks/>
         public int Category { get; set; }
         /// <remarks/>
@@ -22,6 +22,7 @@ namespace AgentApp.Models
         /// <remarks/>
         public int CancellationDays { get; set; }
         /// <remarks/>
+        [Column(TypeName = "decimal(18,2)")]
         public decimal CancellationPrice { get; set; }
         /// <remarks/>
         public string Description { get; set; }
@@ -34,6 +35,7 @@ namespace AgentApp.Models
 
         public Agent Agent { get; set; }
         /// <remarks/>
+        [Column(TypeName = "decimal(18,2)")]
         public decimal DefaultPrice { get; set; }
 
         public List<PeriodPrice> PeriodPrices { get; set; }

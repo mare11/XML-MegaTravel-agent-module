@@ -17,7 +17,7 @@ namespace AgentApp.Controllers
     public class SynchronizeController : ControllerBase
     {
         private readonly AgentContext _context;
-        private SynchronizeController(AgentContext context) => _context = context;
+        public SynchronizeController(AgentContext context) => _context = context;
 
         [HttpPost("{id}")]
         public ActionResult Login(long id)
@@ -49,7 +49,7 @@ namespace AgentApp.Controllers
             foreach (AccommodationService.AdditionalService addService in tempListAS)
             {
                 AdditionalServicesOnly adso = new AdditionalServicesOnly();
-                adso.Id = addService.Id;
+                adso.Id = addService.id;
                 adso.AdditionalServiceName = addService.additionalServiceName;
 
                 _context.AdditionalServicesOnlies.Add(adso);
@@ -90,6 +90,8 @@ namespace AgentApp.Controllers
             _context.RemoveRange(_context.AccommodationTypes);
             _context.RemoveRange(_context.Agents);
             _context.RemoveRange(_context.Locations);
+
+            _context.SaveChanges();
 
             return Ok();
         }

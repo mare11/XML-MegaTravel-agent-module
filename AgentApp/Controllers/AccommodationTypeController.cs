@@ -38,7 +38,7 @@ namespace AgentApp.Controllers
                 bool flag = false;
                 for(int j = 0; j < currentTypes.Count; ++j)
                 {
-                    if(tempList.ElementAt(i).Id == currentTypes.ElementAt(j).Id)
+                    if(tempList.ElementAt(i).id == currentTypes.ElementAt(j).Id)
                     {
                         currentTypes.RemoveAt(j);
                         flag = true;
@@ -62,14 +62,14 @@ namespace AgentApp.Controllers
                 }
             }
             
-            //upis novih vrednosti iz glavne baze(update)
-            int n = 0;
-            foreach (AccommodationService.AccommodationType aType in tempList)
-            {
-                _context.AccommodationTypes.Add(tempList.ElementAt(n).CreateAccommodationType());
-                _context.SaveChanges();
-                ++n;
-            }
+            ////upis novih vrednosti iz glavne baze(update)
+            //int n = 0;
+            //foreach (AccommodationService.AccommodationType aType in tempList)
+            //{
+            //    _context.AccommodationTypes.Add(tempList.ElementAt(n).CreateAccommodationType());
+            //    _context.SaveChanges();
+            //    ++n;
+            //}
 
             return _context.AccommodationTypes;
         }

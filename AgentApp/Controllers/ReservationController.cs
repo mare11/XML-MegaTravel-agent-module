@@ -32,7 +32,9 @@ namespace AgentApp.Controllers
             ReservationService.Reservation[] reservations = resTemp.Result.getReservationResponse1;
 
             List<Models.Reservation> ress = new List<Models.Reservation>();
-            ress = _context.Reservations.ToList<Models.Reservation>();
+            ress = _context.Reservations
+                .Include(reservation => reservation.Messages).ToList();
+            ;
 
             for (int i = 0; i < reservations.Length; ++i)
             {
@@ -46,7 +48,28 @@ namespace AgentApp.Controllers
                     if (reservations[i].id == ress.ElementAt(j).Id)
                     {
                         flag = true;
-                        _context.Entry(res).State = EntityState.Modified;
+
+                        // copy all values
+                        _context.Entry(ress.ElementAt(j)).CurrentValues.SetValues(res);
+
+                        // updated messages only if new have arrived
+                        if (res.Messages.Count > ress.ElementAt(j).Messages.Count)
+                        {
+                            // delete all messages
+                            foreach (var oldMsg in ress.ElementAt(j).Messages.ToList())
+                            {
+                                ress.ElementAt(j).Messages.Remove(oldMsg);
+                                _context.Messages.Remove(oldMsg);
+                            }
+
+                            // add all messages again
+                            foreach (var newMsg in res.Messages)
+                            {
+                                ress.ElementAt(j).Messages.Add(newMsg);
+                            }
+                        }
+                        
+                        _context.Entry(ress.ElementAt(j)).State = EntityState.Modified;
                         _context.SaveChanges();
                         ress.RemoveAt(j);
                         break;
@@ -76,6 +99,15 @@ namespace AgentApp.Controllers
         [HttpPost("{id}")]
         public ActionResult<ReservationService.Message> AddMessage(ReservationService.Message body, long id)
         {
+            Models.Reservation res = _context.Reservations
+                .Include(reservation => reservation.Messages)
+                .FirstOrDefault(reservation => reservation.Id == id);
+
+            if (res == null)
+            {
+                return NotFound();
+            }
+
             ReservationPortClient reservationPortClient = new ReservationPortClient();
             addMessageRequest messageRequest = new addMessageRequest();
 
@@ -89,12 +121,6 @@ namespace AgentApp.Controllers
             {
                 ReservationService.Message msgDTO = message.Result.addMessageResponse.Message;
                 Models.Message msg = msgDTO.CreateMessage();
-
-                Models.Reservation res = _context.Reservations.Find(id);
-                if (res == null)
-                {
-                    return NotFound();
-                }
 
                 res.Messages.Add(msg);
 
@@ -110,6 +136,13 @@ namespace AgentApp.Controllers
         [HttpPut("{id}")]
         public ActionResult SetRealized(long id)
         {
+            Models.Reservation reservation = _context.Reservations.Find(id);
+
+            if(reservation == null)
+            {
+                return NotFound();
+            }
+
             ReservationPortClient reservationPortClient = new ReservationPortClient();
             setRealizedRequest realizedRequest = new setRealizedRequest();
 
@@ -120,13 +153,12 @@ namespace AgentApp.Controllers
 
             if(response.Result.setRealizedResponse.Reservation != null)
             {
-                var reservation = _context.Reservations.Find(id);
                 reservation.Realized = response.Result.setRealizedResponse.Reservation.realized;
 
                 _context.Entry(reservation).State = EntityState.Modified;
                 _context.SaveChanges();
 
-                return NoContent();
+                return Ok();
             }
 
             return BadRequest();
